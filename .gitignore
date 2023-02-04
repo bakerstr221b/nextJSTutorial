@@ -1,5 +1,5 @@
 node_modules
-.eslintrc.js
+
 package-lock.json
 yarn.lock
 .package.json.swp
