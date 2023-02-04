@@ -49,6 +49,9 @@ const App = () => {
           <a>Move to '/vegetable/something'</a>
         </Link>
       </div>
+      <div>
+        <img src="/cheese.jpg" alt="치즈" />
+      </div>
     </>
   );
 };
