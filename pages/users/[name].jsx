@@ -1,6 +1,7 @@
 import fetch from "isomorphic-unfetch";
 import Profile from "../../components/Profile";
 import css from "styled-jsx/css";
+import formatDistance from "date-fns/formatDistance";
 
 const style = css`
 .user-contents-wrapper{
@@ -84,7 +85,12 @@ const name = ({ user, repos }) => {
               <p className="repository-description">{repo.description}</p>
               <p className="repository-language">
                 {repo.language}
-                <span className="repository-updated-at"></span>
+                {repo.updated_at}
+                <span className="repository-updated-at">
+                  {formatDistance(new Date(repo.updated_at), new Date(), {
+                    addSuffix: true,
+                  })}
+                </span>
               </p>
             </div>
           ))}
@@ -96,17 +102,18 @@ const name = ({ user, repos }) => {
 
 export const getServerSideProps = async ({ query }) => {
   console.log("query : " + JSON.stringify({ query }));
-  const { name } = query;
+  const { name, page } = query;
   try {
     let user;
     let repos;
+
     const userRes = await fetch(`https://api.github.com/users/${name}`);
     if (userRes.status === 200) {
       user = await userRes.json();
       console.log("user   :   " + user);
     }
     const repoRes = await fetch(
-      `https://api.github.com/users/${name}/repos?sort=updated&page=1&per_page=10`
+      `https://api.github.com/users/${name}/repos?sort=updated&page=${page}&per_page=10`
     );
     if (repoRes.status === 200) {
       repos = await repoRes.json();
